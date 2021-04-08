@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import SuperHero
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views.generic.detail import DetailView
+
+from .models import SuperHero
 
 
 def index(request):
@@ -10,6 +13,14 @@ def index(request):
         'all_mysuperheroes': all_mysuperheroes
     }
     return render(request, 'mysuperheroes/index.html', context)
+
+
+def detail(request):
+    superhero = request.get(pk=1)
+    context = {
+        'single_superhero': superhero
+    }
+    return render(request, 'single_superhero/detail.html', context)
 
 
 def create(request):
@@ -27,5 +38,9 @@ def create(request):
         return render(request, 'mysuperheroes/create.html')
 
 
-def detail():
-    return None
+def delete(request):
+    mysuperheroes = get_object_or_404(SuperHero, id=id)
+    if request.method == 'POST':
+        mysuperheroes.delete()
+        messages.success(request, "successfully deleted")
+        return HttpResponseRedirect("/Blog/list")

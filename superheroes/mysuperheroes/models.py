@@ -5,6 +5,7 @@ from django.db import models
 
 
 class SuperHero(models.Model):
+    objects = None
     name = models.CharField(max_length=50)
     alter_ego = models.CharField(max_length=50)
     primary_ability = models.CharField(max_length=50)
@@ -14,3 +15,5 @@ class SuperHero(models.Model):
 
 def myfunc():
     print()
+
+
